@@ -47,6 +47,9 @@ importers:
       fastify-type-provider-zod:
         specifier: ^5.0.2
         version: 5.0.2(@fastify/swagger@9.5.1)(fastify@5.4.0)(zod@4.0.13)
+      kafkajs:
+        specifier: ^2.2.4
+        version: 2.2.4
       supertest:
         specifier: ^7.1.4
         version: 7.1.4
@@ -2066,6 +2069,10 @@ packages:
   jsonpointer@5.0.1:
     resolution: {integrity: sha512-p/nXbhSEcu3pZRdkW1OfJhpsVtW1gd4Wa1fnQc9YLiTfAjn0312eMKimbdIQzuZl9aa9xUGaRlP9T/CJE/ditQ==}
     engines: {node: '>=0.10.0'}
+
+  kafkajs@2.2.4:
+    resolution: {integrity: sha512-j/YeapB1vfPT2iOIUn/vxdyKEuhuY2PxMBvf5JWux6iSaukAccrMtXEY/Lb7OvavDhOWME589bpLrEdnVHjfjA==}
+    engines: {node: '>=14.0.0'}
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -5499,6 +5506,8 @@ snapshots:
   json-stable-stringify-without-jsonify@1.0.1: {}
 
   jsonpointer@5.0.1: {}
+
+  kafkajs@2.2.4: {}
 
   keyv@4.5.4:
     dependencies:

@@ -6,7 +6,14 @@ import fastify from "fastify";
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
 import { env } from "../../env";
 import { errorHandler } from "./error-handler";
+import { makeOnUserCreatedSubscriber } from "./factories/make-on-user-created-subscriber";
 import { userRoutes } from "./routes/userRoutes";
+
+function setupSubscribers() {
+    makeOnUserCreatedSubscriber();
+  
+    console.log('✅ Subscribers registered');
+  }
     
 export default async function buildApp() {
     const app = fastify().withTypeProvider<ZodTypeProvider>();
@@ -47,6 +54,8 @@ app.register(fastifyJwt, {
 app.register(fastifyCors)
 
 app.register(userRoutes)
+
+setupSubscribers();
 
 app.ready()
 

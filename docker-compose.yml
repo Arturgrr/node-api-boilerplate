@@ -1,3 +1,10 @@
+version: '3.8'
+
+volumes:
+  postgres_data: 
+  minio_data: 
+  kafka_data: 
+
 services:
   postgres:
     image: postgres:latest
@@ -28,16 +35,6 @@ services:
       timeout: 20s
       retries: 3
 
-  zookeeper:
-    image: bitnami/zookeeper:latest
-    container_name: a2g-zookeeper
-    ports:
-      - "2181:2181"
-    volumes:
-      - "zookeeper_data:/bitnami/zookeeper"
-    environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
-
   kafka:
     image: bitnami/kafka:latest
     container_name: a2g-kafka
@@ -46,26 +43,24 @@ services:
     volumes:
       - "kafka_data:/bitnami/kafka"
     environment:
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
-      - ALLOW_PLAINTEXT_LISTENER=yes
-    depends_on:
-      - zookeeper
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9093,CONTROLLER://:9094,EXTERNAL://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9093,EXTERNAL://localhost:9092
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9094
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
 
-  supertokens:
-    image: registry.supertokens.io/supertokens/supertokens-postgresql:7.0
-    container_name: a2g-supertokens
-    ports:
-      - "3567:3567"
-    environment:
-      - SUPERTOKENS_TELEMETRY=false
-      - SUPERTOKENS_API_KEY=${SUPERTOKENS_API_KEY}
-      - POSTGRESQL_CONNECTION_URI=postgresql://admin:admin@postgres:5432/node-api
-    depends_on:
-      - postgres
+  # supertokens:
+  #   image: registry.supertokens.io/supertokens/supertokens-postgresql:7.0
+  #   container_name: a2g-supertokens
+  #   ports:
+  #     - "3567:3567"
+  #   environment:
+  #     - SUPERTOKENS_TELEMETRY=false
+  #     - SUPERTOKENS_API_KEY=${SUPERTOKENS_API_KEY}
+  #     - POSTGRESQL_CONNECTION_URI=postgresql://admin:admin@postgres:5432/node-api
+  #   depends_on:
+  #     - postgres
 
-volumes:
-  postgres_data:
-  minio_data:
-  zookeeper_data:
-  kafka_data: 
