@@ -17,36 +17,40 @@ describe('Create User Use Case', () => {
   });
 
   it('should be able to create a new user', async () => {
+    const user = makeUser();
+
     const result = await sut.execute({
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      password: 'password123',
+      name: user.name,
+      email: user.email,
+      password: user.passwordHash,
     });
 
     expect(result.isRight()).toBe(true);
     expect(usersRepository.users).toHaveLength(1);
-    expect(usersRepository.users[0].email).toEqual('john.doe@example.com');
+    expect(usersRepository.users[0].email).toEqual(user.email);
   });
 
   it('should hash the user password upon creation', async () => {
+    const user = makeUser();
+
     await sut.execute({
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      password: 'password123',
+      name: user.name,
+      email: user.email,
+      password: user.passwordHash,
     });
 
     expect(usersRepository.users).toHaveLength(1);
-    expect(usersRepository.users[0].passwordHash).toEqual('password123-hashed');
+    expect(usersRepository.users[0].passwordHash).toEqual(user.passwordHash);
   });
 
   it('should not be able to create a user with an already existing email', async () => {
-    const userWithSameEmail = makeUser({ email: 'john.doe@example.com' });
+    const userWithSameEmail = makeUser();
     usersRepository.users.push(userWithSameEmail);
 
     const result = await sut.execute({
-      name: 'Another John',
-      email: 'john.doe@example.com',
-      password: 'password123',
+      name: userWithSameEmail.name,
+      email: userWithSameEmail.email,
+      password: userWithSameEmail.passwordHash,
     });
 
     expect(result.isLeft()).toBe(true);
