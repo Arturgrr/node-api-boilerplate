@@ -1,8 +1,7 @@
-version: "3.8"
 services:
   postgres:
     image: postgres:latest
-    container_name: postgres
+    container_name: a2g-postgres
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
@@ -13,7 +12,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
   minio:
     image: minio/minio
-    container_name: minio
+    container_name: a2g-minio
     ports:
       - "9000:9000"  
       - "9001:9001"  
@@ -31,7 +30,7 @@ services:
 
   zookeeper:
     image: bitnami/zookeeper:latest
-    container_name: zookeeper
+    container_name: a2g-zookeeper
     ports:
       - "2181:2181"
     volumes:
@@ -41,7 +40,7 @@ services:
 
   kafka:
     image: bitnami/kafka:latest
-    container_name: kafka
+    container_name: a2g-kafka
     ports:
       - "9092:9092"
     volumes:
@@ -55,13 +54,13 @@ services:
 
   supertokens:
     image: registry.supertokens.io/supertokens/supertokens-postgresql:7.0
-    container_name: supertokens
+    container_name: a2g-supertokens
     ports:
       - "3567:3567"
     environment:
       - SUPERTOKENS_TELEMETRY=false
       - SUPERTOKENS_API_KEY=${SUPERTOKENS_API_KEY}
-      - POSTGRESQL_CONNECTION_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - POSTGRESQL_CONNECTION_URI=postgresql://admin:admin@postgres:5432/node-api
     depends_on:
       - postgres
 
