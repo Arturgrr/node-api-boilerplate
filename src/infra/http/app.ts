@@ -8,7 +8,8 @@ import { env } from "../../env";
 import { errorHandler } from "./error-handler";
 import { userRoutes } from "./routes/userRoutes";
     
-const app = fastify().withTypeProvider<ZodTypeProvider>();
+export default async function buildApp() {
+    const app = fastify().withTypeProvider<ZodTypeProvider>();
 
 app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);
@@ -47,4 +48,7 @@ app.register(fastifyCors)
 
 app.register(userRoutes)
 
-export default app;
+app.ready()
+
+return app;
+}

@@ -1,7 +1,7 @@
 import "dotenv/config";
 import z from "zod";
 
-const schema = z.object({
+export const envSchema = z.object({
     PORT: z.coerce.number().default(3000),
     JWT_SECRET: z.string(),
     DATABASE_URL: z.url(),
@@ -15,7 +15,7 @@ const schema = z.object({
     SUPERTOKENS_API_KEY: z.string(),
 })
 
-const _env = schema.safeParse(process.env);
+const _env = envSchema.safeParse(process.env);
 
 if (!_env.success) {
     console.error("Invalid environment variables", _env.error.flatten().fieldErrors);

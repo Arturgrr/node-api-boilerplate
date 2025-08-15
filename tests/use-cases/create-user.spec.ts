@@ -19,10 +19,12 @@ describe('Create User Use Case', () => {
   it('should be able to create a new user', async () => {
     const user = makeUser();
 
+    const password = user.passwordHash;
+
     const result = await sut.execute({
       name: user.name,
       email: user.email,
-      password: user.passwordHash,
+      password,
     });
 
     expect(result.isRight()).toBe(true);
@@ -36,11 +38,12 @@ describe('Create User Use Case', () => {
     await sut.execute({
       name: user.name,
       email: user.email,
-      password: user.passwordHash,
+      password: 'plain-password',
     });
 
     expect(usersRepository.users).toHaveLength(1);
-    expect(usersRepository.users[0].passwordHash).toEqual(user.passwordHash);
+    expect(usersRepository.users[0].passwordHash).not.toEqual('plain-password');
+    expect(usersRepository.users[0].passwordHash).toEqual(await passwordHasher.hash('plain-password'));
   });
 
   it('should not be able to create a user with an already existing email', async () => {

@@ -1,8 +1,14 @@
 import { env } from "./env";
-import app from "./infra/http/app";
+import buildApp from "./infra/http/app";
 
-app.listen({
-    port: env.PORT,
-}).then(() => {
-    console.log("🚀 HTTP Server Running!");
-});
+async function startServer() {
+  const app = await buildApp();
+
+  app.listen({
+      port: env.PORT,
+  }).then(() => {
+      console.log("🚀 HTTP Server Running!");
+  });
+}
+
+startServer();
