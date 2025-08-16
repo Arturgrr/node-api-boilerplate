@@ -11,9 +11,7 @@ import { userRoutes } from "./routes/userRoutes";
 
 function setupSubscribers() {
     makeOnUserCreatedSubscriber();
-  
-    console.log('✅ Subscribers registered');
-  }
+}
     
 export default async function buildApp() {
     const app = fastify().withTypeProvider<ZodTypeProvider>();

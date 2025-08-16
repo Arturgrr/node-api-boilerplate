@@ -51,6 +51,8 @@ services:
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9094
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      - BITNAMI_DEBUG=true
+
 
   # supertokens:
   #   image: registry.supertokens.io/supertokens/supertokens-postgresql:7.0

@@ -32,14 +32,5 @@ export const errorHandler: FastifyErrorHandler = (error, req, reply) => {
     return reply.status(409).send({ message: error.message })
   }
 
-  console.log(error.stack);
-  console.log(error.message);
-  console.log(error.name);
-  console.log(error.cause);
-  console.log(error.code);
-  console.log(error.message);
-  console.log(error.name);
-  console.log(error.cause);
-
   reply.status(500).send({ message: 'Internal server error' })
 }

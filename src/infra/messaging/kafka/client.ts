@@ -1,9 +1,9 @@
 import { env } from "@/env";
-import { ConsoleLoggerProvider } from "@/infra/providers/ConsoleLoggerProvider";
+import { PinoLoggerProvider } from "@/infra/providers/PinoLoggerProvider";
 import { Kafka } from "kafkajs";
 import { KafkaJSLogCreator } from "./logger";
 
-const logger = new ConsoleLoggerProvider();
+const logger = new PinoLoggerProvider();
 
 const logCreator = KafkaJSLogCreator(logger);
 

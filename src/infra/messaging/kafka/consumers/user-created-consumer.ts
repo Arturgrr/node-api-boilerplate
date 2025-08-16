@@ -1,5 +1,5 @@
-import { ConsoleLoggerProvider } from '@/infra/providers/ConsoleLoggerProvider';
 import { ConsoleNotificationProvider } from '@/infra/providers/ConsoleNotificationProvider';
+import { PinoLoggerProvider } from '@/infra/providers/PinoLoggerProvider';
 import { kafka } from '../client';
 
 export async function userCreatedConsumer() {
@@ -7,7 +7,7 @@ export async function userCreatedConsumer() {
   await consumer.connect();
   await consumer.subscribe({ topic: 'UserCreatedEvent', fromBeginning: true });
 
-  const logger = new ConsoleLoggerProvider();
+  const logger = new PinoLoggerProvider();
   const notificationProvider = new ConsoleNotificationProvider();
 
   await consumer.run({
